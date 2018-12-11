@@ -1,0 +1,22 @@
+装载协处理器
+alter 'bigdata:test' , METHOD =>'table_att','coprocessor'=>'hdfs://dev01-bigdata.mars.lianjia.com:9000/test/PutObserver-1.0-SNAPSHOT.jar|com.sid.hbase.HbaseObserver|1001|'
+卸载协处理器
+alter 'bigdata:test',METHOD => 'table_att_unset',NAME =>'coprocessor$5'
+
+中断MR
+hadoop job -kill job_1543609528137_377650
+
+yarn application -kill application_1543609528137_377650
+
+create index "idx_nebula_carbon_bucket" on "nebula"."carbon"("header"."Bucket","header"."ContentLength") async;
+
+${HBASE_HOME}/bin/hbase --config ~/bin/hbase/conf_public \
+org.apache.phoenix.mapreduce.index.IndexTool -D mapred.min.split.size=268435456 \
+--schema "nebula" --data-table "carbon" --index-table "idx_nebula_carbon_bucket" \
+--output-path hdfs://hbase05.zeus.lianjia.com:9000/user/bigdata/phoenix_index/idx_nebula_carbon_bucket
+
+${HBASE_HOME}/bin/hbase --config ~/bin/hbase/conf_public  \
+org.apache.phoenix.mapreduce.index.IndexTool -D phoenix.mapreduce.split.by.stats=false -D io.sort.mb=1024 \
+--schema "nebula" --data-table "carbon" --index-table "idx_nebula_carbon_bucket" \
+--output-path hdfs://hbase05.zeus.lianjia.com:9000/user/bigdata/phoenix_index/idx_nebula_carbon_bucket
+

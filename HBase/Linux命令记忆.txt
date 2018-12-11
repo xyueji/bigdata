@@ -1,0 +1,13 @@
+nc传输文件：
+发送方： nc -lv 9090 < telegraf-1.7.2-1.x86_64.rpm 
+接收方： nc jx-db-hbase00.zeus.lianjia.com 9090 > /srv/salt/file/telegraf-1.7.2-1.x86_64.rpm
+
+动态获取hostname:
+`hostname`
+$(hostname)
+
+查看依赖类：
+grep "Class Name" -r
+
+查看类在jar包里的路径：
+jar vtf phoenix-4.14.1-HBase-1.2-client.jar | grep "CombineFileInputFormat"

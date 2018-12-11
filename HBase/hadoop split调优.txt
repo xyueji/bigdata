@@ -1,0 +1,11 @@
+split size 
+FileInputFormat input splits: (详见 《the definitive guide》P190)
+mapred.min.split.size: default=1, the smallest valide size in bytes for a file split.
+mapred.max.split.size: default=Long.MAX_VALUE, the largest valid size.
+dfs.block.size: default = 64M, 系统中设置为128M。
+如果设置 minimum split size > block size, 会增加块的数量。(猜想从其他节点拿去数据的时候，会合并block，导致block数量增多) 
+如果设置maximum split size < block size, 会进一步拆分block。
+
+split size = max(minimumSize, min(maximumSize, blockSize));
+
+hadoop jar ... -D 

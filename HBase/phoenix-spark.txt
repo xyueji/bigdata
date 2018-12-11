@@ -1,0 +1,21 @@
+spark-shell \
+ --master yarn --executor-memory 4g --executor-cores 2 --num-executors 2 --driver-memory 2g \
+ --conf spark.dynamicAllocation.enabled=true \
+ --conf spark.shuffle.service.enabled=true \
+ --conf spark.dynamicAllocation.maxExecutors=30 \
+
+val df = spark.read.format("jdbc").option("driver", "org.apache.phoenix.jdbc.PhoenixDriver").option("url", "jdbc:phoenix:hbase10.zeus.lianjia.com:2181/hbase").option("dbtable", "\"nebula\".\"carbon\"").load();
+//List<Row> list = df.collectAsList();
+df.collectAsList().size();
+
+spark-submit --class xxxxx
+ --master yarn --executor-memory 4g --executor-cores 2 --num-executors 2 --driver-memory 2g \
+ --conf spark.dynamicAllocation.enabled=true \
+ --conf spark.shuffle.service.enabled=true \
+ --conf spark.dynamicAllocation.maxExecutors=30 \
+ $jar
+ 
+ spark-sql --master yarn --executor-memory 4g --executor-cores 2 --num-executors 2 --driver-memory 2g \
+ --conf spark.dynamicAllocation.enabled=true \
+ --conf spark.shuffle.service.enabled=true \
+ --conf spark.dynamicAllocation.maxExecutors=30
